@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur serveur{% endblock %}
+
+{% block body %}
+<main class="container mt-5">
+    <h1>500 - Erreur serveur</h1>
+    <p>Une erreur inattendue est survenue. Merci de réessayer plus tard.</p>
+    <a href="{{ path('app_home') }}" class="btn btn-primary">Retour à l'accueil</a>
+</main>
+{% endblock %}

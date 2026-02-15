@@ -15,6 +15,15 @@ class ArticleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Article::class);
     }
+    public function findByUser($user)
+{
+    return $this->createQueryBuilder('a')
+        ->andWhere('a.user = :user')
+        ->setParameter('user', $user)
+        ->orderBy('a.created_at', 'DESC')
+        ->getQuery()
+        ->getResult();
+}
 
     //    /**
     //     * @return Article[] Returns an array of Article objects

@@ -4,12 +4,41 @@
 
 {% block body %}
 <main>
-    <h1>{{ article.title }}</h1>
 
+
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <div class="article-card">
+    {% if article.image %}
+        <img src="{{ asset('uploads/articles/' ~ article.image) }}" alt="{{ article.title }}" class="article-img">
+    {% endif %}
+    <h2>{{ article.title }}</h2>
+    <p>{{ article.content|length > 100 ? article.content[:100] ~ '...' : article.content }}</p>
+</div>
+
+    <h1>{{ article.title }}</h1>
     <p>{{ article.content }}</p>
 
-    <a href={{path('app_home')}}>Retourner à l'accueil</a>
+    <a href="{{ path('app_home') }}">Retourner à l'accueil</a>
 
-    <a href="{{ path('article_edit', {'id': article.id}) }}">Editer</a>
+
+    {% if app.user and article.user.id == app.user.id %}
+        <a href="{{ path('article_edit', {'id': article.id}) }}" class="btn btn-primary">Editer</a>
+
+        <form action="{{ path('article_delete', {'id': article.id}) }}" method="POST" style="display:inline;">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+            <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('Voulez-vous vraiment supprimer cet article ?');">
+                Supprimer
+            </button>
+        </form>
+    {% endif %}
+
 </main>
 {% endblock %}

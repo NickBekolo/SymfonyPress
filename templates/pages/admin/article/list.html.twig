@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes articles{% endblock %}
+
+{% block body %}
+<h1>Mes articles</h1>
+
+<ul>
+{% for article in articles %}
+    <li>
+        {{ article.title }} - {{ article.createdAt|date('d/m/Y') }}
+
+        {# Boutons pour modifier et supprimer #}
+        <a href="{{ path('article_edit', {'id': article.id}) }}" class="btn btn-primary">Modifier</a>
+
+        <form action="{{ path('article_delete', {'id': article.id}) }}" method="POST" style="display:inline;">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+            <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('Voulez-vous vraiment supprimer cet article ?');">
+                Supprimer
+            </button>
+        </form>
+    </li>
+{% else %}
+    <li>Aucun article publié.</li>
+{% endfor %}
+</ul>
+{% endblock %}

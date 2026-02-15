@@ -6,15 +6,7 @@
 <main>
     <h1>Derniers articles</h1>
 
-    <section>
-        <h2>Catégories</h2>
 
-        <nav>
-            {% for category in categories %}
-                <a href="{{ path('category_show', {'slug': category.slug}) }}">{{ category.name }}</a>
-            {% endfor %}
-        </nav>
-    </section>
 
     <section>
         {% for article in articles %}

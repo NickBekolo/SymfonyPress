@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
+use App\Entity\Category;
 use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,6 +18,11 @@ class Article
     #[ORM\Column]
     private ?int $id = null;
 
+
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     #[Assert\NotBlank(message: 'Le titre est requis.')]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -23,20 +30,20 @@ class Article
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\NotBlank(message: 'Le contenu est requis.')]
+    #[Assert\Length(min: 20, minMessage: 'Le contenu doit faire au moins 20 caractères.')]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    public function __construct()
-    {
-        $this->created_at = new \DateTimeImmutable();
-    }
+
 
     public function getId(): ?int
     {
@@ -52,7 +59,7 @@ class Article
     {
         $this->title = $title;
 
-        if (!$this->slug) {
+        if (!$this->slug && $title) {
             $slugger = new AsciiSlugger();
             $this->slug = $slugger->slug($title)->lower();
         }
@@ -96,6 +103,18 @@ class Article
         return $this;
     }
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -107,4 +126,9 @@ class Article
 
         return $this;
     }
+    public function __construct()
+    {
+    $this->created_at = new \DateTimeImmutable();
+    }
+
 }

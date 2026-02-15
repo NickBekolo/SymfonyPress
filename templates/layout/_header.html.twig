@@ -1,7 +1,52 @@
 <header>
-    <nav>
-        <div>
-            <a href="{{ path('app_home') }}">Accueil</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <div>
+                <a class="navbar-brand text-dark fw-bold" href="{{ path('app_home') }}">SymfonyPress</a>
+            </div>
+
+
+
+                {% for category in categories is defined ? categories : [] %}
+                    <a class="nav-link text-dark" href="{{ path('category_show', {'slug': category.slug}) }}">
+                        {{ category.name }}
+                    </a>
+                {% endfor %}
+
+
+
+
+                {% if app.user %}
+                    <a class="nav-link text-dark" href="{{ path('article_list') }}">Mes articles</a>
+                    <a class="nav-link text-dark" href="{{ path('article_new') }}">Créer un article</a>
+                    <form action="{{ path('app_logout') }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-link nav-link text-dark p-0">Déconnexion</button>
+                    </form>
+                {% else %}
+                    <a class="nav-link text-dark" href="{{ path('app_login') }}">Connexion</a>
+                    <a class="nav-link text-dark" href="{{ path('app_register') }}">Inscription</a>
+                {% endif %}
+
         </div>
     </nav>
+
+
+    <style>
+        .nav-link {
+            transition: color 0.2s, background-color 0.2s;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .nav-link:hover {
+            color: #228B22 !important;
+            background-color: #f0f0f0;
+        }
+
+        .btn-link.nav-link:hover {
+            color: #228B22 !important;
+        }
+    </style>
 </header>
