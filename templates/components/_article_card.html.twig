@@ -1,9 +1,14 @@
-<article>
-    <h3>{{ article.title }}</h3>
+<article class="article-card">
+    {% if article.image is defined and article.image %}
+        <img src="{{ asset(article.image) }}" alt="{{ article.title }}" class="article-img">
+    {% endif %}
 
-    <span>{{article.category.name}}</span>
+    <h2>{{ article.title }}</h2>
+    <div class="meta">{{ article.category.name }}</div>
 
-    <p>{{ article.content|slice(0, 100) }}...</p>
+    <p>{{ article.content|striptags|slice(0, 140) }}{% if article.content|length > 140 %}...{% endif %}</p>
 
-    <a href="{{ path('article_show', {'slug': article.slug}) }}">Lire la suite</a>
+    <div style="margin-top:8px;">
+        <a href="{{ path('article_show', {'slug': article.slug}) }}">Lire la suite</a>
+    </div>
 </article>
