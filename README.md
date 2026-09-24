@@ -1,4 +1,4 @@
-# SymfonyPress
+# Publix
 
 Mini-CMS éducatif pour la publication d'articles avec catégories, développé avec Symfony 7.4 et PHP 8.2+. Projet structuré en progression pédagogique sur 3 jours (lecture de données, CRUD, sécurité).
 
